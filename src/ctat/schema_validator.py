@@ -33,7 +33,7 @@ def validate(json_object: object) -> bool:
     return is_valid
 
 
-def load_json_config(file_path: str) -> object:
+def load_json_config(file_path: str) -> dict:
     """
     Reads the configuration object from the given path.
     :param file_path: path to the json file
@@ -46,7 +46,7 @@ def load_json_config(file_path: str) -> object:
             raise Exception("JSON read failed:" + file_path + " " + str(e))
 
 
-def load_yaml_config(file_path: str) -> object:
+def load_yaml_config(file_path: str) -> dict:
     """
     Reads the configuration object from the given path.
     :param file_path: path to the yaml file
@@ -59,7 +59,7 @@ def load_yaml_config(file_path: str) -> object:
             raise Exception("Yaml read failed:" + file_path + " " + str(e))
 
 
-def load_config(file_path: str) -> object:
+def load_config(file_path: str) -> dict:
     """
     Reads the configuration object from the given path.
     :param file_path: path to the configuration file

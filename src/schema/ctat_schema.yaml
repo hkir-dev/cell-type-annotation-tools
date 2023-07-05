@@ -1,8 +1,8 @@
 $schema: "http://json-schema.org/draft-07/schema#"
 title: Cell Type Annotation
-type: array
-items: { $ref : '#/definitions/column_definition' }
+type: object
 additionalProperties: False
+required: [ 'fields' ]
 
 
 definitions:
@@ -57,5 +57,34 @@ definitions:
           evidence_markers
           marker_confidence_score
 
+properties:
 
+  taxonomy_id:
+    type: string
+    description: "Taxonomy identifier"
+
+  species_ids:
+    type: array
+    items: { type: string }
+    description: "Identifier of the species of this taxonomy"
+
+  species_names:
+    type: array
+    items: { type: string }
+    description: "Names of the species of this taxonomy"
+
+  brain_region_ids:
+    type: array
+    items: { type: string }
+    description: "Identifiers of the brain regions of this taxonomy"
+
+  brain_region_names:
+    type: array
+    items: { type: string }
+    description: "Names of the brain regions of this taxonomy"
+
+  fields:
+    type: array
+    description: "Data column definitions"
+    items: { $ref : '#/definitions/column_definition' }
 
