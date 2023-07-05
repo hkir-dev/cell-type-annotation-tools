@@ -54,7 +54,7 @@ definitions:
           brain_region_ontology_term_id
           brain_region_name
           marker_ontology_term_id
-          marker_name
+          evidence_markers
           marker_confidence_score
 
 

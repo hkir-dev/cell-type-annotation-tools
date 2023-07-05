@@ -32,7 +32,7 @@
   {
       "column_name": "NSForest markers (Combo)",
       "column_type": "annotation_field",
-      "column_mapping": "marker_name"
+      "column_mapping": "evidence_markers"
   },
   {
       "column_name": "NSForest F1 score",
