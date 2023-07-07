@@ -45,17 +45,15 @@ definitions:
       column_type:
         description: "Type of the column"
         enum:
-          annotation_field
-      column_mapping:
-        description: "Column's mapping to a cell type annotation standard field."
-        enum:
-          cell_type_ontology_term_id
-          cell_type_name
-          brain_region_ontology_term_id
-          brain_region_name
+          cell_ontology_term_id
+          cell_ontology_term
           marker_ontology_term_id
-          evidence_markers
-          marker_confidence_score
+          marker_genes
+          synonyms
+          accession_id
+          # marker_confidence_score
+          # brain_region_ontology_term_id
+          # brain_region_name
 
 properties:
 

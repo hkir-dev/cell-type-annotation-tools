@@ -20,15 +20,12 @@ fields:
     column_type: cell_set
     rank: 3
 
-  - column_name: region.info (Frequency)
-    column_type: annotation_field
-    column_mapping: brain_region_name
+  - column_name: NSForest markers (Combo)
+    column_type: marker_genes
     rank: 10
 
-  - column_name: NSForest markers (Combo)
-    column_type: annotation_field
-    column_mapping: evidence_markers
-
-  - column_name: NSForest F1 score
-    column_type: annotation_field
-    column_mapping: marker_confidence_score
+#  - column_name: region.info (Frequency)
+#    column_type: brain_region_name
+#
+#  - column_name: NSForest F1 score
+#    column_type: marker_confidence_score

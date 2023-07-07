@@ -1,16 +1,13 @@
-taxonomy_id: CCN202204130
+taxonomy_id: CCN20230601
 brain_region_names:
   - Basal Ganglia
 species_names:
-  - NHP
-
-# should we give data url here?
+  - Macaca Mulatta
 
 fields:
   - column_name: cluster_id
     column_type: cluster_id
     rank: 0
-# direction of the ranking 0 = root or leaf (consider variable level count)
 
   - column_name: cluster_name
     column_type: cluster_name
@@ -28,14 +25,13 @@ fields:
     column_type: cell_set
     rank: 3
 
-  - column_name: region.info (Frequency)
-    column_type: annotation_field
-    column_mapping: brain_region_name
-
   - column_name: NSForest markers (Combo)
-    column_type: annotation_field
-    column_mapping: evidence_markers
+    column_type: marker_genes
 
-  - column_name: NSForest F1 score
-    column_type: annotation_field
-    column_mapping: marker_confidence_score
+#  - column_name: region.info (Frequency)
+#    column_type: brain_region_name
+#    column_mapping: brain_region_name
+
+#  - column_name: NSForest F1 score
+#    column_type: marker_confidence_score
+#    column_mapping: marker_confidence_score
