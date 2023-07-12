@@ -109,13 +109,14 @@ class CellTypeAnnotation(EncoderMixin):
         self.annotation_objects.append(obj)
 
 
-def format_data(data_file: str, config_file: str):
+def format_data(data_file: str, config_file: str, out_file: str) -> dict:
     """
     Formats given data into standard cell type annotation data structure using the given configuration.
 
     :param data_file: Unformatted user data in tsv/csv format.
     :param config_file: configuration file path.
-    :return:
+    :param out_file: output file path.
+    :return: output data as dict
     """
     config = load_config(config_file)
     is_config_valid = validate(config)
@@ -157,9 +158,11 @@ def format_data(data_file: str, config_file: str):
         ao_names[ao.cell_label] = ao
         cta.add_annotation_object(ao)
 
-    print(cta.to_json())
+    output_data = cta.to_json(indent=2)
+    with open(out_file, "w") as out_file:
+        out_file.write(output_data)
 
-    return ""
+    return cta.to_dict()
 
 
 def add_user_annotations(ao, headers, record, utilized_columns):
