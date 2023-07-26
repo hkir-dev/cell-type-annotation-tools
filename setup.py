@@ -8,7 +8,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="ctat",
-    version="0.0.1.dev1",
+    version="0.0.2.dev1",
     description="The aim of this project is to specify the Cell Type Annotation schema and related data standardization operations.",
     long_description=README,
     long_description_content_type="text/markdown",
