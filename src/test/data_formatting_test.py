@@ -17,7 +17,7 @@ class CellTypeAnnotationTests(unittest.TestCase):
         # print(result)
         print(type(result))
         self.assertTrue(result)
-        self.assertTrue("dataUrl" in result)
-        self.assertEqual("my_data_url", result["dataUrl"])
+        self.assertTrue("data_url" in result)
+        self.assertEqual("my_data_url", result["data_url"])
 
 

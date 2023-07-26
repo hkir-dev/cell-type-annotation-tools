@@ -9,7 +9,7 @@ from ctat.file_utils import read_tsv_to_dict
 
 class EncoderMixin(DataClassJsonMixin):
     dataclass_json_config = dataclasses_json.config(
-        letter_case=dataclasses_json.LetterCase.CAMEL,
+        # letter_case=dataclasses_json.LetterCase.CAMEL,
         undefined=dataclasses_json.Undefined.EXCLUDE,
         exclude=lambda f: f is None
     )["dataclasses_json"]
@@ -58,6 +58,8 @@ class Annotation(EncoderMixin):
     cell_label: str
     """This denotes any free-text term which the author uses to label cells."""
 
+    rank: Optional[int] = 0
+
     cell_ontology_term_id: Optional[str] = None
     """This MUST be a term from either the Cell Ontology or from some ontology that extends it by classifying cell 
     types under terms from the Cell Ontology e.g. the Provisional Cell Ontology."""
@@ -65,12 +67,12 @@ class Annotation(EncoderMixin):
     cell_ontology_term: Optional[str] = None
     """This MUST be the human-readable name assigned to the value of 'cell_ontology_term_id"""
 
-    accession_id: Optional[str] = None
+    cell_set_accession: Optional[str] = None
 
     cell_ids: Optional[List[str]] = None  # mandatory for cell types
     """List of cell barcode sequences/UUIDs used to uniquely identify the cells"""
 
-    parent_node_name: Optional[str] = None
+    parent_cell_set_name: Optional[str] = None
 
     synonyms: Optional[List[str]] = None
     """This field denotes any free-text term of a biological entity which the author associates as synonymous with the 
@@ -141,10 +143,12 @@ def format_data(data_file: str, config_file: str, out_file: str) -> dict:
                 ao.cell_label = str(record[field["column_name"]])
                 utilized_columns.add(field["column_name"])
             if field["column_type"] == "cluster_id":
-                ao.accession_id = str(record[field["column_name"]])
+                ao.cell_set_accession = str(record[field["column_name"]])
+                ao.rank = int(str(field["rank"]).strip())
                 utilized_columns.add(field["column_name"])
             if field["column_type"] == "cell_set":
                 parent_ao = Annotation(field["column_name"], record[field["column_name"]])
+                parent_ao.rank = int(str(field["rank"]).strip())
                 parents.insert(int(str(field["rank"]).strip()), parent_ao)
                 utilized_columns.add(field["column_name"])
             else:
@@ -188,12 +192,12 @@ def add_parent_node_names(ao, ao_names, cta, parents):
     :param parents: list of current annotation object's parents
     """
     if parents:
-        ao.parent_node_name = parents[1].cell_label
+        ao.parent_cell_set_name = parents[1].cell_label
         prev = None
         for parent in reversed(parents):
             if parent:
                 if prev:
-                    parent.parent_node_name = prev.cell_label
+                    parent.parent_cell_set_name = prev.cell_label
                 prev = parent
                 if parent.cell_label not in ao_names:
                     cta.add_annotation_object(parent)
