@@ -60,11 +60,11 @@ class Annotation(EncoderMixin):
 
     rank: Optional[int] = 0
 
-    cell_ontology_term_id: Optional[str] = None
+    classifying_ontology_term_id: Optional[str] = None
     """This MUST be a term from either the Cell Ontology or from some ontology that extends it by classifying cell 
     types under terms from the Cell Ontology e.g. the Provisional Cell Ontology."""
 
-    cell_ontology_term: Optional[str] = None
+    classifying_ontology_term_name: Optional[str] = None
     """This MUST be the human-readable name assigned to the value of 'cell_ontology_term_id"""
 
     cell_set_accession: Optional[str] = None
