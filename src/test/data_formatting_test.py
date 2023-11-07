@@ -1,6 +1,6 @@
 import unittest
 import os
-from ctat.cell_type_annotation import format_data
+from ctat.cell_type_annotation import format_data, CellTypeAnnotation
 
 RAW_DATA = os.path.join(os.path.dirname(os.path.realpath(__file__)), "./test_data/AIT115_annotation_sheet.tsv")
 TEST_CONFIG = os.path.join(os.path.dirname(os.path.realpath(__file__)), "./test_data/test_config.yaml")
@@ -13,11 +13,32 @@ class CellTypeAnnotationTests(unittest.TestCase):
             os.remove(OUT_FILE)
 
     def test_data_formatting(self):
-        result = format_data(RAW_DATA, TEST_CONFIG, OUT_FILE)
+        result = format_data(RAW_DATA, TEST_CONFIG, OUT_FILE, "json", True)
         # print(result)
-        print(type(result))
         self.assertTrue(result)
-        self.assertTrue("data_url" in result)
-        self.assertEqual("my_data_url", result["data_url"])
+        self.assertTrue("author_name" in result)
+        self.assertEqual("Test User", result["author_name"])
+
+        self.assertTrue("labelsets" in result)
+        self.assertEqual(4, len(result["labelsets"]))
+        print(result["labelsets"])
+
+        self.assertTrue("annotations" in result)
+        self.assertEqual(354, len(result["annotations"]))
+        print(result["annotations"][:10])
+
+        test_annotation = [x for x in result["annotations"] if x["cell_label"] == "1_MSN"][0]
+        self.assertTrue("marker_gene_evidence" in test_annotation)
+        self.assertEqual(3, len(test_annotation["marker_gene_evidence"]))
+        self.assertTrue("EPYC" in test_annotation["marker_gene_evidence"])
+        self.assertTrue("RELN" in test_annotation["marker_gene_evidence"])
+        self.assertTrue("GULP1" in test_annotation["marker_gene_evidence"])
+
+        self.assertTrue("user_annotations" in test_annotation)
+        self.assertEqual(6, len(test_annotation["user_annotations"]))
+
+    def test_empty_data_handling(self):
+        cta = CellTypeAnnotation('Test User', list())
+        print(cta.to_json(indent=2))
 
 

@@ -19,6 +19,8 @@ def main():
                                           help="Formats given data into standard cell type annotation data structure using the given configuration.")
     parser_export.add_argument('-i', '--input', action='store', type=pathlib.Path, required=True)
     parser_export.add_argument('-c', '--config', action='store', type=pathlib.Path, required=True)
+    parser_export.add_argument('-f', '--format', help="Data format to save. Valid values json/tsv")
+    parser_export.add_argument('-pu', '--print_undefined', action='store_true', help="Prints null values to the output json if true. Omits otherwise.")
     parser_export.add_argument('-o', '--output', action='store', type=pathlib.Path, required=True)
 
     args = parser.parse_args()
@@ -28,7 +30,13 @@ def main():
         if not is_valid:
             sys.exit(1)
     elif args.action == "format":
-        format_data(args.input, args.config, args.output)
+        print_undefined = False
+        if 'print_undefined' in args and args.print_undefined:
+            print_undefined = args.print_undefined
+        export_format = "json"
+        if 'format' in args and args.format and args.format in ['json', 'tsv']:
+            export_format = args.format
+        format_data(args.input, args.config, args.output, export_format, print_undefined)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ $schema: "http://json-schema.org/draft-07/schema#"
 title: Cell Type Annotation
 type: object
 additionalProperties: False
-required: [ 'fields' ]
+required: [ 'author_name', 'fields' ]
 
 
 definitions:
@@ -25,9 +25,9 @@ definitions:
       column_type:
         description: "Type of the column"
         enum:
-          cluster_id
-          cluster_name
-          cell_set
+          - "cluster_id"
+          - "cluster_name"
+          - "cell_set"
       rank:
         description: "Use this to number hierarchical cell sets, starting at 0 for cluster (leaf nodes)"
         type: number
@@ -45,17 +45,25 @@ definitions:
       column_type:
         description: "Type of the column"
         enum:
-          cell_ontology_term_id
-          cell_ontology_term
-          marker_ontology_term_id
-          marker_genes
-          synonyms
-          accession_id
-          # marker_confidence_score
-          # brain_region_ontology_term_id
-          # brain_region_name
+          - "cell_fullname"
+          - "cell_ontology_term_id"
+          - "cell_ontology_term"
+          - "cell_ids"
+          - "rationale"
+          - "rationale_dois"
+          - "marker_gene_evidence"
+          - "synonyms"
+          - "cell_set_accession"
+          - "parent_cell_set_accession"
+          # - "marker_confidence_score"
+          # - "brain_region_ontology_term_id"
+          # - "brain_region_name"
 
 properties:
+
+  author_name:
+    type: string
+    description: "This MUST be a string in the format `[FIRST NAME] [LAST NAME]`"
 
   taxonomy_id:
     type: string
