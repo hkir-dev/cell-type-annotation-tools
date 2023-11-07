@@ -13,18 +13,12 @@ from ctat.tabular_serializer import serialize_to_tables
 exclude_none_values = True
 
 
-def custom_exclude(field):
-    """Lambda function to decide exclusion of undefined values from the json output."""
-    return exclude_none_values and field is None
-
-
 class EncoderMixin(DataClassJsonMixin):
 
     dataclass_json_config = dataclasses_json.config(
         # letter_case=dataclasses_json.LetterCase.CAMEL,
         undefined=dataclasses_json.Undefined.EXCLUDE,
         exclude=lambda f: exclude_none_values and f is None
-        # exclude=lambda f: f is None
     )["dataclasses_json"]
 
 
