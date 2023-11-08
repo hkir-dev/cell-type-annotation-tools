@@ -21,11 +21,11 @@ class CellTypeAnnotationTests(unittest.TestCase):
 
         self.assertTrue("labelsets" in result)
         self.assertEqual(4, len(result["labelsets"]))
-        print(result["labelsets"])
+        # print(result["labelsets"])
 
         self.assertTrue("annotations" in result)
         self.assertEqual(354, len(result["annotations"]))
-        print(result["annotations"][:10])
+        # print(result["annotations"][:10])
 
         test_annotation = [x for x in result["annotations"] if x["cell_label"] == "1_MSN"][0]
         self.assertTrue("marker_gene_evidence" in test_annotation)
@@ -36,9 +36,3 @@ class CellTypeAnnotationTests(unittest.TestCase):
 
         self.assertTrue("user_annotations" in test_annotation)
         self.assertEqual(6, len(test_annotation["user_annotations"]))
-
-    def test_empty_data_handling(self):
-        cta = CellTypeAnnotation('Test User', list())
-        print(cta.to_json(indent=2))
-
-

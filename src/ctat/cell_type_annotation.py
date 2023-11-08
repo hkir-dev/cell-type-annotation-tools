@@ -149,6 +149,7 @@ class Annotation(EncoderMixin):
     """This field denotes any free-text term of a biological entity which the author associates as synonymous with the 
     biological entity listed in the field 'cell_label'."""
 
+    # TODO modified: added
     parent_cell_set_name: Optional[str] = None
 
     # TODO modified: list -> str
@@ -222,6 +223,7 @@ def format_data(data_file: str, config_file: str, out_file: str, format:str="jso
     :param data_file: Unformatted user data in tsv/csv format.
     :param config_file: configuration file path.
     :param out_file: output file path.
+    :param format: Data export format. Supported formats are 'json' and 'tsv'
     :param print_undefined: prints null values to the output json if true. Omits undefined values from the json output if
     false. False by default. Only effective in json serialization.
     :return: output data as dict
