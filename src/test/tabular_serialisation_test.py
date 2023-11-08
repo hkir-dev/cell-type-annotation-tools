@@ -19,9 +19,10 @@ class TabularSerialisationTests(unittest.TestCase):
 
     def test_annotation_table(self):
         cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
-        serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
+        tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
 
         annotation_table_path = os.path.join(OUT_FOLDER, "Test_table_annotation.tsv")
+        self.assertEqual(annotation_table_path, tables[0])
         self.assertTrue(os.path.isfile(annotation_table_path))
 
         headers, records = read_csv_to_dict(annotation_table_path, id_column_name="cell_set_accession", delimiter="\t")
@@ -53,3 +54,24 @@ class TabularSerialisationTests(unittest.TestCase):
         self.assertEqual("", cluster_365["parent_cell_set_accession"])
         self.assertEqual("", cluster_365["parent_cell_set_name"])
         self.assertEqual("level1 (class)", cluster_365["labelset"])
+
+    def test_labelset_table(self):
+        cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
+        tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
+
+        annotation_table_path = os.path.join(OUT_FOLDER, "Test_table_labelset.tsv")
+        self.assertEqual(annotation_table_path, tables[1])
+        self.assertTrue(os.path.isfile(annotation_table_path))
+
+        headers, records = read_csv_to_dict(annotation_table_path, id_column_name="name", delimiter="\t")
+        self.assertEqual(4, len(records))
+
+        cluster_ls = records['cluster']
+        self.assertEqual("0", cluster_ls["rank"])
+        self.assertEqual("", cluster_ls["annotation_method"])
+        self.assertEqual("", cluster_ls["automated_annotation_algorithm_name"])
+
+        self.assertEqual("1", records["level 3 (subclass)"]["rank"])
+        self.assertEqual("2", records["level 2 (neighborhood)"]["rank"])
+        self.assertEqual("3", records["level1 (class)"]["rank"])
+

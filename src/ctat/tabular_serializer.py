@@ -58,8 +58,47 @@ def serialize_to_tables(cta, file_name_prefix, out_folder, accession_prefix):
     :param accession_prefix: accession id prefix
     """
     annotation_table_path = generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folder)
-    return annotation_table_path
+    labelset_table_path = generate_labelset_table(cta, file_name_prefix, out_folder)
+    return [annotation_table_path, labelset_table_path]
 
+
+def generate_labelset_table(cta, file_name_prefix, out_folder):
+    """
+    Generates annotation table.
+    :param cta: cell type annotation object to serialize.
+    :param file_name_prefix: Name prefix for table names
+    :param out_folder: output folder path.
+    :param accession_prefix: accession id prefix
+    """
+    table_path = os.path.join(out_folder, file_name_prefix + "_labelset.tsv")
+
+    cta = asdict(cta)
+    records = list()
+
+    for labelset in cta["labelsets"]:
+        record = dict()
+        record["name"] = labelset.get("name", "").replace("_name", "")
+        record["description"] = labelset.get("description", "")
+        record["rank"] = labelset.get("rank", "")
+        record["annotation_method"] = labelset.get("annotation_method", "")
+        if "automated_annotation" in labelset and labelset["automated_annotation"]:
+            aut_annot = labelset["automated_annotation"]
+            name_prefix = "automated_annotation_"
+            record[name_prefix + "algorithm_name"] = aut_annot.get("algorithm_name", "")
+            record[name_prefix + "algorithm_version"] = aut_annot.get("algorithm_version", "")
+            record[name_prefix + "algorithm_repo_url"] = aut_annot.get("algorithm_repo_url", "")
+            record[name_prefix + "reference_location"] = aut_annot.get("reference_location", "")
+        else:
+            name_prefix = "automated_annotation_"
+            record[name_prefix + "algorithm_name"] = ""
+            record[name_prefix + "algorithm_version"] = ""
+            record[name_prefix + "algorithm_repo_url"] = ""
+            record[name_prefix + "reference_location"] = ""
+        records.append(record)
+
+    records_df = pd.DataFrame.from_records(records)
+    records_df.to_csv(table_path, sep="\t", index=False)
+    return table_path
 
 def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folder):
     """
