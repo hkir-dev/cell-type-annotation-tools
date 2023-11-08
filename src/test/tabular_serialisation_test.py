@@ -59,11 +59,11 @@ class TabularSerialisationTests(unittest.TestCase):
         cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
         tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
 
-        annotation_table_path = os.path.join(OUT_FOLDER, "Test_table_labelset.tsv")
-        self.assertEqual(annotation_table_path, tables[1])
-        self.assertTrue(os.path.isfile(annotation_table_path))
+        table_path = os.path.join(OUT_FOLDER, "Test_table_labelset.tsv")
+        self.assertEqual(table_path, tables[1])
+        self.assertTrue(os.path.isfile(table_path))
 
-        headers, records = read_csv_to_dict(annotation_table_path, id_column_name="name", delimiter="\t")
+        headers, records = read_csv_to_dict(table_path, id_column_name="name", delimiter="\t")
         self.assertEqual(4, len(records))
 
         cluster_ls = records['cluster']
@@ -74,4 +74,34 @@ class TabularSerialisationTests(unittest.TestCase):
         self.assertEqual("1", records["level 3 (subclass)"]["rank"])
         self.assertEqual("2", records["level 2 (neighborhood)"]["rank"])
         self.assertEqual("3", records["level1 (class)"]["rank"])
+
+    def test_metadata_table(self):
+        cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
+        tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
+
+        table_path = os.path.join(OUT_FOLDER, "Test_table_metadata.tsv")
+        self.assertEqual(table_path, tables[2])
+        self.assertTrue(os.path.isfile(table_path))
+
+        headers, records = read_csv_to_dict(table_path, generated_ids=True, delimiter="\t")
+        self.assertEqual(1, len(records))
+
+        self.assertEqual("Test User", records[1]["author_name"])
+        self.assertEqual("", records[1]["cellannotation_schema_version"])
+        self.assertEqual("", records[1]["cellannotation_version"])
+
+    def test_annotation_table_table(self):
+        cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
+        tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
+
+        table_path = os.path.join(OUT_FOLDER, "Test_table_annotation_transfer.tsv")
+        self.assertEqual(table_path, tables[3])
+        self.assertTrue(os.path.isfile(table_path))
+
+        headers, records = read_csv_to_dict(table_path, generated_ids=True, delimiter="\t")
+        self.assertEqual(1, len(records))
+
+        self.assertEqual("", records[1]["transferred_cell_label"])
+        self.assertEqual("", records[1]["source_taxonomy"])
+        self.assertEqual("", records[1]["source_node_accession"])
 

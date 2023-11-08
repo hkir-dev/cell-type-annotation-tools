@@ -59,16 +59,79 @@ def serialize_to_tables(cta, file_name_prefix, out_folder, accession_prefix):
     """
     annotation_table_path = generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folder)
     labelset_table_path = generate_labelset_table(cta, file_name_prefix, out_folder)
-    return [annotation_table_path, labelset_table_path]
+    metadata_table_path = generate_metadata_table(cta, file_name_prefix, out_folder)
+    annotation_transfer_table_path = generate_annotation_transfer_table(cta, file_name_prefix, out_folder)
+    return [annotation_table_path, labelset_table_path, metadata_table_path, annotation_transfer_table_path]
+
+
+def generate_annotation_transfer_table(cta, file_name_prefix, out_folder):
+    """
+    Generates annotation transfer table.
+    :param cta: cell type annotation object to serialize.
+    :param file_name_prefix: Name prefix for table names
+    :param out_folder: output folder path.
+    """
+    table_path = os.path.join(out_folder, file_name_prefix + "_annotation_transfer.tsv")
+
+    cta = asdict(cta)
+    records = list()
+
+    if "transferred_annotations" in cta and cta["transferred_annotations"]:
+        for ta in cta["transferred_annotations"]:
+            record = dict()
+            record["transferred_cell_label"] = ta.get("transferred_cell_label", "")
+            record["source_taxonomy"] = ta.get("source_taxonomy", "")
+            record["source_node_accession"] = ta.get("source_node_accession", "")
+            record["algorithm_name"] = ta.get("algorithm_name", "")
+            record["comment"] = ta.get("comment", "")
+            records.append(record)
+    else:
+        record = dict()
+        record["transferred_cell_label"] = ""
+        record["source_taxonomy"] = ""
+        record["source_node_accession"] = ""
+        record["algorithm_name"] = ""
+        record["comment"] = ""
+        records.append(record)
+
+    records_df = pd.DataFrame.from_records(records)
+    records_df.to_csv(table_path, sep="\t", index=False)
+    return table_path
+
+
+def generate_metadata_table(cta, file_name_prefix, out_folder):
+    """
+    Generates the metadata table.
+    :param cta: cell type annotation object to serialize.
+    :param file_name_prefix: Name prefix for table names
+    :param out_folder: output folder path.
+    """
+    table_path = os.path.join(out_folder, file_name_prefix + "_metadata.tsv")
+
+    cta = asdict(cta)
+    records = list()
+
+    record = dict()
+    record["cellannotation_schema_version"] = cta.get("cellannotation_schema_version", "")
+    record["cellannotation_timestamp"] = cta.get("cellannotation_timestamp", "")
+    record["cellannotation_version"] = cta.get("cellannotation_version", "")
+    record["cellannotation_url"] = cta.get("cellannotation_url", "")
+    record["author_name"] = cta.get("author_name", "")
+    record["author_contact"] = cta.get("author_contact", "")
+    record["orcid"] = cta.get("orcid", "")
+    records.append(record)
+
+    records_df = pd.DataFrame.from_records(records)
+    records_df.to_csv(table_path, sep="\t", index=False)
+    return table_path
 
 
 def generate_labelset_table(cta, file_name_prefix, out_folder):
     """
-    Generates annotation table.
+    Generates labelset table.
     :param cta: cell type annotation object to serialize.
     :param file_name_prefix: Name prefix for table names
     :param out_folder: output folder path.
-    :param accession_prefix: accession id prefix
     """
     table_path = os.path.join(out_folder, file_name_prefix + "_labelset.tsv")
 
