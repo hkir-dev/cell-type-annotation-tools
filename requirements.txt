@@ -1,3 +1,4 @@
 ruamel.yaml
 jsonschema
 dataclasses_json
+pandas

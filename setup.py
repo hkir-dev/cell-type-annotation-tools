@@ -23,7 +23,7 @@ setup(
     package_dir={'': 'src'},
     packages=["ctat", "schema"],
     include_package_data=True,
-    install_requires=["jsonschema", "ruamel.yaml", "dataclasses_json"],
+    install_requires=["jsonschema", "ruamel.yaml", "dataclasses_json", "pandas"],
     entry_points={
         "console_scripts": [
             "ctat=ctat.__main__:main",
