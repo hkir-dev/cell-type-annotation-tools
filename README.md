@@ -4,7 +4,7 @@ This repository provides schema of the cell type annotation and related data sta
 
 ## Installation
 
-Install the latest [pypi package](https://test.pypi.org/project/ctat/) through following the instructions in the pypi page.
+Install the latest [pypi package](https://pypi.org/project/ctat/) through following the instructions in the pypi page.
 
 ## Configuration Spec
 
