@@ -160,6 +160,9 @@ class Annotation(EncoderMixin):
     # TODO modified: added
     user_annotations: Optional[List[UserAnnotation]] = None
 
+    # TODO modified: moved from CTA to Annotation class
+    transferred_annotations: Optional[AnnotationTransfer] = None
+
     def add_user_annotation(self, user_annotation_set, user_annotation_label):
         """
         Adds a user defined annotation which is not supported by the standard schema.
@@ -205,8 +208,6 @@ class CellTypeAnnotation(EncoderMixin):
 
     cellannotation_url: Optional[str] = None
     """A persistent URL of all cell annotations published (per dataset)."""
-
-    transferred_annotations: Optional[AnnotationTransfer] = None
 
     def add_annotation_object(self, obj):
         """
