@@ -76,17 +76,22 @@ def generate_annotation_transfer_table(cta, file_name_prefix, out_folder):
     cta = asdict(cta)
     records = list()
 
-    if "transferred_annotations" in cta and cta["transferred_annotations"]:
-        for ta in cta["transferred_annotations"]:
-            record = dict()
-            record["transferred_cell_label"] = ta.get("transferred_cell_label", "")
-            record["source_taxonomy"] = ta.get("source_taxonomy", "")
-            record["source_node_accession"] = ta.get("source_node_accession", "")
-            record["algorithm_name"] = ta.get("algorithm_name", "")
-            record["comment"] = ta.get("comment", "")
-            records.append(record)
-    else:
+    for annotation_object in cta["annotations"]:
+        if ("cell_set_accession" in annotation_object and annotation_object["cell_set_accession"] and
+                "transferred_annotations" in annotation_object and annotation_object["transferred_annotations"]):
+            for ta in annotation_object["transferred_annotations"]:
+                record = dict()
+                record["target_node_accession"] = annotation_object["cell_set_accession"]
+                record["transferred_cell_label"] = ta.get("transferred_cell_label", "")
+                record["source_taxonomy"] = ta.get("source_taxonomy", "")
+                record["source_node_accession"] = ta.get("source_node_accession", "")
+                record["algorithm_name"] = ta.get("algorithm_name", "")
+                record["comment"] = ta.get("comment", "")
+                records.append(record)
+
+    if not records:
         record = dict()
+        record["target_node_accession"] = ""
         record["transferred_cell_label"] = ""
         record["source_taxonomy"] = ""
         record["source_node_accession"] = ""
@@ -183,6 +188,7 @@ def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folde
         if "cell_set_accession" in annotation_object and annotation_object["cell_set_accession"]:
             record["cell_set_accession"] = (accession_manager.generate_accession_id(
                 annotation_object.get("cell_set_accession", "")))
+            annotation_object["cell_set_accession"] = record["cell_set_accession"]
             record["cell_label"] = annotation_object.get("cell_label", "")
             record["cell_fullname"] = annotation_object.get("cell_fullname", "")
             record["parent_cell_set_accession"] = ""

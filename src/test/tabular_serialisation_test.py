@@ -90,7 +90,7 @@ class TabularSerialisationTests(unittest.TestCase):
         self.assertEqual("", records[1]["cellannotation_schema_version"])
         self.assertEqual("", records[1]["cellannotation_version"])
 
-    def test_annotation_table_table(self):
+    def test_annotation_transfer_table(self):
         cta = ingest_user_data(RAW_DATA, TEST_CONFIG)
         tables = serialize_to_tables(cta, "Test_table", OUT_FOLDER, "TST_")
 
@@ -101,6 +101,7 @@ class TabularSerialisationTests(unittest.TestCase):
         headers, records = read_csv_to_dict(table_path, generated_ids=True, delimiter="\t")
         self.assertEqual(1, len(records))
 
+        self.assertEqual("", records[1]["target_node_accession"])
         self.assertEqual("", records[1]["transferred_cell_label"])
         self.assertEqual("", records[1]["source_taxonomy"])
         self.assertEqual("", records[1]["source_node_accession"])
