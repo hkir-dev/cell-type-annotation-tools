@@ -203,7 +203,7 @@ def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folde
             if "user_annotations" in annotation_object and annotation_object["user_annotations"]:
                 for user_annot in annotation_object["user_annotations"]:
                     record[normalize_column_name(user_annot["annotation_set"])] = user_annot["cell_label"]
-            record["cell_ids"] = annotation_object.get("cell_ids", "")
+            # record["cell_ids"] = annotation_object.get("cell_ids", "")
             std_records.append(record)
         else:
             # parent nodes
