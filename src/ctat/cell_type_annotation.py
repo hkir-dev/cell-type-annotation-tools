@@ -88,7 +88,7 @@ class AnnotationTransfer(EncoderMixin):
 class UserAnnotation(EncoderMixin):
     """User defined custom annotations which are not part of the standard schema."""
 
-    annotation_set: str
+    labelset: str
     """The unique name of the set of cell annotations associated with a single file."""
 
     cell_label: Any
