@@ -33,7 +33,7 @@ class TabularSerialisationTests(unittest.TestCase):
         self.assertEqual("TST_300", cluster_1["parent_cell_set_accession"])
         self.assertEqual("D1-Matrix", cluster_1["parent_cell_set_name"])
         self.assertEqual("cluster", cluster_1["labelset"])
-        self.assertEqual("['EPYC', 'RELN', 'GULP1']", cluster_1["marker_gene_evidence"])
+        self.assertEqual("[\"EPYC\", \"RELN\", \"GULP1\"]", cluster_1["marker_gene_evidence"])
         self.assertEqual("PuR(0.52) | CaH(0.39)", cluster_1["region.info _Frequency_"])
         # self.assertEqual("", cluster_1["cell_ids"])
 

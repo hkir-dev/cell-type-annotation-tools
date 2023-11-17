@@ -168,6 +168,7 @@ def generate_labelset_table(cta, file_name_prefix, out_folder):
     records_df.to_csv(table_path, sep="\t", index=False)
     return table_path
 
+
 def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folder):
     """
     Generates annotation table.
@@ -197,9 +198,9 @@ def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folde
             record["cell_ontology_term_id"] = annotation_object.get("cell_ontology_term_id", "")
             record["cell_ontology_term"] = annotation_object.get("cell_ontology_term", "")
             record["rationale"] = annotation_object.get("rationale", "")
-            record["rationale_dois"] = annotation_object.get("rationale_dois", "")
-            record["marker_gene_evidence"] = annotation_object.get("marker_gene_evidence", "")
-            record["synonyms"] = annotation_object.get("synonyms", "")
+            record["rationale_dois"] = list_to_string(annotation_object.get("rationale_dois", []))
+            record["marker_gene_evidence"] = list_to_string(annotation_object.get("marker_gene_evidence", []))
+            record["synonyms"] = list_to_string(annotation_object.get("synonyms", []))
             if "user_annotations" in annotation_object and annotation_object["user_annotations"]:
                 for user_annot in annotation_object["user_annotations"]:
                     record[normalize_column_name(user_annot["labelset"])] = user_annot["cell_label"]
@@ -229,6 +230,20 @@ def generate_annotation_table(accession_prefix, cta, file_name_prefix, out_folde
     std_records_df = pd.DataFrame.from_records(std_records)
     std_records_df.to_csv(std_data_path, sep="\t", index=False)
     return std_data_path
+
+
+def list_to_string(my_list: list):
+    """
+    Converts a list to its string representation. Nanobot has problem with single quotations so removes them as well.
+    Params:
+        my_list: list to serialize
+    Returns: string representation of the list
+    """
+    if not my_list:
+        str_value = "[]"
+    else:
+        str_value = str(my_list).replace("'", "\"")
+    return str_value
 
 
 def assign_parent_accession_ids(accession_manager, std_parent_records, std_parent_records_dict, labelsets):
